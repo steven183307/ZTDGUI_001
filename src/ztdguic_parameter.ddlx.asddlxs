@@ -1,0 +1,52 @@
+@Metadata.layer: #CORE
+
+annotate  entity ztdguia_parameter  with
+    
+{
+  @EndUserText.label:'公司代碼'
+  @Consumption.valueHelpDefinition: [{ entity:{ name: 'ZTDGUIC_BUKRS_VH',element: 'Bukrs' }
+                                       ,useForValidation: true
+//                                        }]
+    ,distinctValues: true
+//    ,
+//    additionalBinding: [{
+//                          localElement: 'Butxt',
+//                          element: 'Butxt',
+//                          usage: #FILTER_AND_RESULT }]
+                            }
+                            ]
+  bukrs;
+//  @EndUserText.label:'公司名稱'
+//  butxt;
+  @EndUserText.label: '會計年度'
+  gjahr;
+  @EndUserText.label:'依 會計文件 條件'
+  bkpf;
+
+  @EndUserText.label:'過帳日期from'
+//  @Consumption.filter:{ selectionType: #INTERVAL ,multipleSelections: false }
+  budat;
+  @EndUserText.label:'to'
+  budat2;
+  @EndUserText.label:'會計文件號碼From'
+  belnr;
+  @EndUserText.label:'會計文件號碼To'
+  belnrto;   
+  @EndUserText.label:'請款文件號碼'
+  vbeln;
+  @EndUserText.label:'使用者'
+  usnam;
+  @EndUserText.label:'彙開代表號'
+  belnr2;
+  @EndUserText.label:'依 憑證 為條件'
+  zinvt;
+  @EndUserText.label:'憑證日期'
+  bldat;
+  @EndUserText.label:'憑證號碼'
+  xblnr;
+  @EndUserText.label:'彙開代表號'
+  belnr3;
+  @EndUserText.label:'排除 彙開發票'
+  skip;
+    
+}

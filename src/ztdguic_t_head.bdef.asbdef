@@ -1,0 +1,41 @@
+projection;
+strict ( 2 );
+use draft;
+use side effects;
+
+
+define behavior for ZTDGUIC_T_head alias _head
+{
+  use create;
+  use update;
+  use delete;
+
+  use action GetData;
+  use action UpdateData;
+
+  use action Edit;
+  use action Activate;
+  use action Discard;
+  use action Resume;
+  use action Prepare;
+
+
+  use action side_child1;
+  use function GetDefaultsFor_neil;
+
+  use association _detail { create; with draft; }
+}
+
+define behavior for ZTDGUIC_T_detail alias _detail
+{
+  use update;
+  use delete;
+
+  use action copyInstance;
+  use action assignNumber;
+  use action deleteItem;
+  use action cancelDelete;
+
+
+  use association _HEAD { with draft; }
+}

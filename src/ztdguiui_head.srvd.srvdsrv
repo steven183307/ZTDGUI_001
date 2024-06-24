@@ -1,0 +1,5 @@
+@EndUserText.label: 'GUI HEAD'
+define service ZTDGUIUI_HEAD {
+  expose ZTDGUIC_T_head   as HEAD;
+  expose ZTDGUIC_T_detail as DETAIL;
+}

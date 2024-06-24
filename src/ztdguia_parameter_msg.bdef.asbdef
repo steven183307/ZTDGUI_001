@@ -1,0 +1,10 @@
+abstract;
+//strict ( 2 );
+define behavior for ztdguia_parameter_msg //alias <alias_name>
+{
+//沒有用
+  field ( readonly )
+  errormsg;
+
+
+}

@@ -1,0 +1,196 @@
+managed implementation in class zbp_tdguii_t_head unique;
+strict ( 2 );
+with draft;
+define behavior for ZTDGUII_T_head alias _head
+persistent table ztdguit_t_head
+draft table ztdguitd_head
+lock master unmanaged
+total etag Lastchangedat
+etag master LastChangedat
+authorization master ( global )
+
+{
+  field ( readonly )
+  HeadID,
+  Canl,
+  SumFg,
+  NetFg,
+  Bukrs,
+  Belnr,
+  Budat,
+  Mwskz,
+  Hwbas,
+  Hwste,
+  Usnam,
+  BelnrIndex,
+  HwbasIndex,
+  HwsteIndex,
+  SyncMsg,
+  CreatedAt,
+  Lastchangedat,
+  Lastchangedby,
+  Locallastchangedat,
+  s_bas,
+  S_BAS2,
+  s_ste,
+  S_STE2,
+  u_bas,
+  u_ste,
+  c_bas,
+  c_ste;
+
+  field ( numbering : managed ) HeadID;
+
+  create;
+  update;
+  delete;
+  association _detail { create; with draft; }
+
+  action ( features : instance ) UpdateData result [1] $self;
+//  action ( features : instance ) UpdateData;
+
+  static action GetData parameter ztdguia_parameter result [1..*] $self { default function GetDefaultsFor_neil; }
+
+  draft action Edit;
+  draft action Activate optimized;
+  draft action Discard;
+  draft action Resume;
+
+  draft determine action Prepare
+  {
+    validation _detail~checkXblnr;
+    validation _detail~checkSTCEG;
+    validation _detail~checkWaers;
+  }
+
+  determine action side_child1
+  {
+    validation _Detail~checkXblnr;
+    validation _Detail~checkStceg;
+    validation _Detail~checkWaers;
+  }
+  side effects
+  {
+    determine action side_child1 executed on entity _detail affects messages;
+  }
+
+  internal action ReCalcTotal;
+
+  mapping for ztdguii_t_head corresponding;
+}
+
+define behavior for ZTDGUII_T_detail alias _detail
+implementation in class zbp_tdguii_t_detail unique
+persistent table ztdguit_t_detail
+draft table ztdguitd_detail2
+lock dependent by _HEAD
+authorization dependent by _HEAD
+etag master LastChangedat
+{
+  update;
+  delete ( features : instance );
+
+  association _HEAD { with draft; }
+
+  field ( features : instance )
+  CustomsType,
+  CustomsDate,
+  CanlDate,
+  CanlTime,
+  CanlUser,
+  discountmsg,
+  discountq,
+  discountu,
+  Arktx,
+  CustFlag,
+  Menge,
+  NonCustomsName,
+  NonCustomsNo,
+  DivFlag,
+  Tax_Type,
+  Zexport,
+  Canl,
+  Notcheck,
+  Vatcode,
+  errormsg,
+  Stceg,
+  Hwbas,
+  Hwste,
+  Am_Type,
+  Copies,
+  Custname,
+  Zform_Code,
+  Xblnr,
+  Vatdate,
+  Bldat;
+
+  field ( readonly )
+  statusmsg,
+  itemno,
+  HeadID,
+  ZformText,
+  amtype_text,
+  zexport_text,
+  taxtype_text,
+  copies_text,
+  Hidefield,
+//  Aenam,
+  criticality1;
+
+  field ( numbering : managed, readonly )
+  detailid;
+
+  field ( mandatory )
+  Xblnr;
+
+
+  determination calcTotal_u_bas on modify { create; update;
+                                            field Hwbas;
+                                            field Hwste;
+                                            field Zform_Code; }
+
+  determination changeArktx on modify { field Custname; }
+
+//  action ( features : instance ) copyInstance result [1] $self;
+  factory action ( features : instance ) copyInstance [1];
+
+  action ( features : instance ) assignNumber result [1] $self;
+  action ( features : instance ) cancelDelete result [1] $self;
+  action ( features : instance ) deleteItem parameter ztdguia_parameter_msg result [1] $self;
+
+  side effects
+  {
+    action copyInstance affects field _HEAD.u_ste,
+                                field _HEAD.c_ste,
+                                field _HEAD.u_bas,
+                                field _HEAD.c_bas;
+    action deleteItem   affects field _HEAD.u_ste,
+                                field _HEAD.c_ste,
+                                field _HEAD.u_bas,
+                                field _HEAD.c_bas,
+                                field statusmsg,
+                                field criticality1;
+    action cancelDelete affects field _HEAD.u_ste,
+                                field _HEAD.c_ste,
+                                field _HEAD.u_bas,
+                                field _HEAD.c_bas,
+                                field statusmsg,
+                                field criticality1;
+    field Custname   affects field Arktx;
+    field Hwbas      affects field _HEAD.u_bas, field _HEAD.c_bas;
+    field Hwste      affects field _HEAD.u_ste, field _HEAD.c_ste;
+    field Zform_Code affects field _HEAD.u_ste,
+                             field _HEAD.c_ste,
+                             field _HEAD.u_bas,
+                             field _HEAD.c_bas;
+  }
+
+  validation checkXblnr on save { create; update; field Xblnr; }
+  validation checkSTCEG on save { create; update; field STCEG; }
+  validation checkWaers on save { create; update; field waers; }
+  determination hideControl on modify { create; }
+  determination fillItemNo on save { create; }
+  determination updateStatus on save { field Xblnr, Stceg; }
+
+  mapping for ztdguii_t_detail corresponding;
+}

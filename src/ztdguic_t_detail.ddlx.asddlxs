@@ -1,0 +1,397 @@
+@Metadata.layer: #CORE
+@UI: {
+  headerInfo: {
+    typeName: '發票明細',
+    typeNamePlural: '發票明細',
+    title: { type: #STANDARD, value: 'Belnr' },
+         description: { type: #STANDARD, value: 'Xblnr' } },
+         presentationVariant: 
+         [{
+         sortOrder: [{ by: 'itemno', direction: #ASC }],
+         visualizations: [{type: #AS_LINEITEM}] ,
+         maxItems: 99
+         }]
+  }
+
+//@UI.deleteHidden: true
+annotate view ZTDGUIC_T_detail with
+{
+  @UI.facet: [ {
+    id: 'idIdentification',
+    type: #IDENTIFICATION_REFERENCE,
+    label: 'detail',
+    position: 10
+  } ]
+
+//  @UI.hidden: true
+    @UI.lineItem: [
+    { invocationGrouping: #CHANGE_SET },
+    {
+      type:#FOR_ACTION,
+      dataAction: 'copyInstance',
+      label : 'Copy Instance'
+//isCopyAction會導致get_instance_features失效
+//     , isCopyAction: true   
+      },
+      {
+      type:#FOR_ACTION,
+      dataAction: 'deleteItem',
+      label : 'Deltete Instance'
+      },
+      {
+      type:#FOR_ACTION,
+      dataAction: 'cancelDelete',
+      label : 'Cancel Deltete'
+      },
+      {
+      type:#FOR_ACTION,
+      dataAction: 'assignNumber',
+      label : '配號'
+      }
+    ]
+  detailid;
+  
+  @UI.lineItem: [ {
+  position: 10  ,
+  criticality: 'criticality1',
+  cssDefault.width: '7em'   
+  } ]
+  @UI.identification: [ {
+    position: 10 ,criticality: 'criticality1'
+  } ]  
+  statusmsg;
+  
+  @UI.lineItem: [ {
+  position: 20
+    } ]
+  @UI.identification: [ {
+    position: 20
+  } ]
+  itemno;
+
+  @UI.lineItem: [ {
+  position: 24,
+  cssDefault.width: '8em'
+  } ]
+  @UI.identification: [ {
+    position: 24
+  } ]
+  @UI.hidden: #(Hidefield) 
+  nummsg;  
+
+  @UI.lineItem: [ {
+  position: 25
+  } ]
+  @UI.identification: [ {
+    position: 25
+  } ]
+  @UI.hidden: #(Hidefield) 
+  Aenam;  
+  
+  @UI.lineItem: [ {
+    position: 30
+  } ]
+  @UI.identification: [ {
+    position: 30
+  } ]
+  Bldat;
+
+  @UI.lineItem: [ {
+    position: 40
+  } ]
+  @UI.identification: [ {
+    position: 40
+  } ]
+  Vatdate;
+
+  @UI.lineItem: [ {
+    position: 50,
+  cssDefault.width: '7em'        
+  } ]
+  @UI.identification: [ {
+    position: 50
+  } ]
+  Xblnr;
+
+  @UI.lineItem: [ {
+    position: 60
+  } ]
+  @UI.identification: [ {
+    position: 60
+  } ]
+  @Consumption.valueHelpDefinition: [
+  { entity:  { name:    'ZTDGUIC_ZFORM_CODE_VH', element: 'value_low' },
+//  useForValidation: true,
+  additionalBinding: [{ element:      'text',
+                        localElement: 'ZformText'
+                        ,usage:  #RESULT
+                                                  }]
+             }]
+  Zform_Code;
+
+  //  @UI.lineItem: [ {
+  //    position: 45
+  //  } ]
+//  @UI.identification: [ {
+//    position: 70
+//  } ]
+  @UI.hidden: true
+  ZformText;
+
+  @UI.lineItem: [ {
+    position: 80
+  } ]
+  @UI.identification: [ {
+    position: 80
+  } ]
+  Custname;
+
+  @UI.lineItem: [ {
+    position: 90,
+  cssDefault.width: '8em'      
+  } ]
+  @UI.identification: [ {
+    position: 90
+  } ]
+  Stceg;
+  @UI.lineItem: [ {
+  position: 100
+  } ]
+  @UI.identification: [ {
+    position: 100
+  } ]
+  Hwbas;
+  @UI.lineItem: [ {
+  position: 110
+  } ]
+  @UI.identification: [ {
+    position: 110
+  } ]
+  Hwste;
+
+  @UI.lineItem: [ {
+  position: 120
+  } ]
+  @UI.identification: [ {
+    position: 120
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity:{ name: 'ZTDGUIC_AM_TYPE_VH',element: 'value_low' }
+    ,additionalBinding: [{ element:'text',
+                           localElement: 'amtype_text'
+                              ,usage:  #RESULT
+                              }]
+                                        }]
+  Am_Type;
+  @UI.hidden: true
+//  @UI.identification: [ {
+//  position: 120
+//  } ]
+  amtype_text;
+  @UI.lineItem: [ {
+  position: 130
+  } ]
+  @UI.identification: [ {
+    position: 130
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity:{ name: 'ZTDGUIC_COPIES_VH',element: 'value_low' }
+    ,additionalBinding: [{ element:'text',
+                           localElement: 'copies_text'
+                              ,usage:  #RESULT
+                              }]
+                                        }]
+  Copies;
+//    @UI.identification: [ {
+//    position: 130
+//  } ]
+  @UI.hidden: true
+  copies_text;
+  @UI.lineItem: [ {
+  position: 140
+  } ]
+  @UI.identification: [ {
+    position: 140
+  } ]
+  DivFlag;
+  @UI.lineItem: [ {
+  position: 150
+  } ]
+  @UI.identification: [ {
+    position: 150
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity:{ name: 'ZTDGUIC_TAX_TYPE_VH',element: 'value_low' }
+      ,additionalBinding: [{ element:'text',
+                             localElement: 'taxtype_text'
+                                ,usage:  #RESULT
+                                }]
+                                          }]
+  Tax_Type;
+//    @UI.identification: [ {
+//    position: 150
+//  } ]
+  @UI.hidden: true
+  taxtype_text;
+  @UI.lineItem: [ {
+  position: 160
+  } ]
+  @UI.identification: [ {
+    position: 160
+  } ]
+  @Consumption.valueHelpDefinition: [{ entity:{ name: 'ZTDGUIC_ZEXPORT_VH',element: 'value_low' }
+  ,useForValidation: true
+  ,distinctValues: true
+    ,additionalBinding: [{ element:'text',
+                           localElement: 'zexport_text',
+                           usage:  #RESULT
+                              }]
+                                       }]
+  Zexport;
+//    @UI.identification: [ {
+//    position: 160
+//  } ]
+  @UI.hidden: true
+  zexport_text;
+  @UI.lineItem: [ {
+  position: 170
+  } ]
+  @UI.identification: [ {
+    position: 170
+  } ]
+  @UI.hidden: #(Hidefield)    
+  Canl;
+  @UI.lineItem: [ {
+  position: 180
+  } ]
+  @UI.identification: [ {
+    position: 180
+  } ]
+  @UI.hidden: #(Hidefield)   
+  Notcheck;
+  @UI.lineItem: [ {
+  position: 190
+  } ]
+  @UI.identification: [ {
+    position: 190
+  } ]
+  @UI.hidden: #(Hidefield)   
+  Vatcode;
+  @UI.lineItem: [ {
+  position: 200
+  } ]
+  @UI.identification: [ {
+    position: 200
+  } ]
+  errormsg;
+  @UI.lineItem: [ {
+  position: 210
+  } ]
+  @UI.identification: [ {
+    position: 210
+  } ]
+  @UI.hidden: #(Hidefield)   
+  discountmsg;
+  @UI.lineItem: [ {
+  position: 220
+  } ]
+  @UI.identification: [ {
+    position: 220
+  } ]
+  @UI.hidden: #(Hidefield)   
+  discountq;
+  @UI.lineItem: [ {
+  position: 230
+  } ]
+  @UI.identification: [ {
+    position: 230
+  } ]
+  @UI.hidden: #(Hidefield)   
+  discountu;
+  @UI.lineItem: [ {
+  position: 240
+  } ]
+  @UI.identification: [ {
+    position: 240
+  } ]
+  @UI.hidden: #(Hidefield)   
+  Arktx;
+  @UI.lineItem: [ {
+  position: 250
+  } ]
+  @UI.identification: [ {
+    position: 250
+  } ]
+  @UI.hidden: #(Hidefield)   
+  CustFlag;
+  @UI.lineItem: [ {
+  position: 260
+  } ]
+  @UI.identification: [ {
+    position: 260
+  } ]
+  @UI.hidden: #(Hidefield)   
+  Menge;
+  @UI.lineItem: [ {
+  position: 270
+  } ]
+  @UI.identification: [ {
+    position: 270
+  } ]
+  @UI.hidden: #(Hidefield)   
+  NonCustomsName;
+  @UI.lineItem: [ {
+  position: 280
+  } ]
+  @UI.identification: [ {
+    position: 280
+  } ]
+  @UI.hidden: #(Hidefield)   
+  NonCustomsNo;
+  @UI.lineItem: [ {
+  position: 290
+  } ]
+  @UI.identification: [ {
+    position: 290
+  } ]
+  @UI.hidden: #(Hidefield)   
+  CustomsType;
+  @UI.lineItem: [ {
+  position: 300
+  } ]
+  @UI.identification: [ {
+    position: 300
+  } ]
+  @UI.hidden: #(Hidefield)    
+  CustomsDate;
+  @UI.lineItem: [ {
+  position: 310
+  } ]
+  @UI.identification: [ {
+    position: 310
+  } ]
+  @UI.hidden: #(Hidefield)    
+  CanlDate;
+  @UI.lineItem: [ {
+  position: 320
+  } ]
+  @UI.identification: [ {
+    position: 320
+  } ]
+  @UI.hidden: #(Hidefield)    
+  CanlTime;
+  @UI.lineItem: [ {
+  position: 330
+  } ]
+  @UI.identification: [ {
+    position: 330
+  } ]
+  @UI.hidden: #(Hidefield)    
+  CanlUser;
+  @UI.hidden: true
+//  @UI.lineItem: [ {
+//  position: 340
+//  } ]
+//  @UI.identification: [ {
+//    position: 340
+//  } ]  
+  Hidefield;
+
+}
